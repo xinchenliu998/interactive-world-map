@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>交互式世界地图</title>
+
+  <!-- Leaflet 地图库 -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  <!-- 自定义样式 -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- 配置模块（必须在其他模块之前加载）-->
+  <script src="js/config.js"></script>
+
+  <!-- 数据模块 -->
+  <script src="data/country-names.js"></script>
+  <script src="data/manual-countries.js"></script>
+  <script src="data/country-codes.js"></script>
+
+  <!-- 功能模块 -->
+  <script src="js/map.js"></script>
+  <script src="js/countries.js"></script>
+  <script src="js/small-countries.js"></script>
+  <script src="js/search.js"></script>
+
+  <!-- 应用初始化 -->
+  <script>
+    // 页面加载完成后初始化应用
+    document.addEventListener("DOMContentLoaded", async function () {
+      // 从配置获取 UI 文本
+      const uiConfig = getAll().ui || {};
+      const mapConfig = getAll().map || {};
+
+      // 设置页面标题
+      if (uiConfig.title) {
+        document.title = uiConfig.title;
+      }
+
+      // 更新搜索框占位符
+      const searchInput = document.getElementById("searchInput");
+      if (searchInput && uiConfig.searchPlaceholder) {
+        searchInput.placeholder = uiConfig.searchPlaceholder;
+      }
+
+      // 更新搜索按钮文本
+      const searchButton = document.getElementById("searchButton");
+      if (searchButton && uiConfig.searchButtonText) {
+        searchButton.textContent = `🔍 ${uiConfig.searchButtonText}`;
+      }
+
+      // 更新默认选中国家文本
+      const currentCountry = document.getElementById("currentCountry");
+      if (currentCountry && uiConfig.currentCountryDefaultText) {
+        currentCountry.textContent = uiConfig.currentCountryDefaultText;
+      }
+
+      // 更新操作说明
+      const infoBoxInstructions = document.querySelector("#infoBox p:nth-of-type(2)");
+      if (infoBoxInstructions && uiConfig.infoBoxInstructions) {
+        infoBoxInstructions.innerHTML = `<strong>操作说明：</strong> ${uiConfig.infoBoxInstructions}`;
+      }
+
+      // 更新提示文本
+      const infoBoxTip = document.querySelector("#infoBox p:nth-of-type(3)");
+      if (infoBoxTip && uiConfig.infoBoxTip) {
+        infoBoxTip.innerHTML = `<strong>提示：</strong> ${uiConfig.infoBoxTip}`;
+      }
+
+      // 初始化地图
+      initMap();
+
+      // 加载国家边界数据
+      loadCountryData(
+        // 成功回调
+        function (countriesLayer, worldGeoJSON) {
+          // 为小国家添加可点击的圆形标记
+          addSmallCountryMarkers(countriesLayer);
+
+          // 显示手动定义的国家标记
+          showManualCountryMarkers();
+
+          // 设置搜索功能
+          setupSearchEvents();
+        },
+        // 错误回调
+        function (error) {
+          console.error("数据加载失败:", error);
+        }
+      );
+    });
+  </script>
+</head>
+<body>
+  <div id="container">
+    <h1>🌍 交互式世界地图</h1>
+    <p class="subtitle">
+      点击地图上的任意国家/地区，其边界将高亮显示，地图会自动定位到该位置。
+    </p>
+
+    <div id="searchBox">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="输入城市或国家名称（支持中文/英文），按回车搜索..."
+      />
+      <button id="searchButton">🔍 搜索</button>
+    </div>
+    <div id="searchResults"></div>
+
+    <div id="map"></div>
+
+    <div id="infoBox">
+      <h3>🗺️ 地图信息</h3>
+      <p>
+        <strong id="selectedTypeLabel">当前选中：</strong>
+        <span id="currentCountry">暂无，请点击地图选择</span>
+      </p>
+      <p>
+        <strong>操作说明：</strong> 鼠标悬停可预览，点击后变为<span
+          style="color: #e74c3c"
+          >红色高亮</span
+        >。
+      </p>
+      <p><strong>提示：</strong> 加载边界数据可能需要几秒钟，请稍候。</p>
+    </div>
+
+    <p class="credits">使用 Leaflet 库渲染 | 本示例为交互式地图演示</p>
+  </div>
+</body>
+</html>

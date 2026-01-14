@@ -1,0 +1,140 @@
+/**
+ * 交互式世界地图样式
+ */
+
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+}
+
+#container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #7f8c8d;
+  margin-bottom: 20px;
+}
+
+#map {
+  height: 680px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  z-index: 1;
+}
+
+/* 搜索框样式 */
+#searchBox {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+#searchInput {
+  flex: 1;
+  padding: 12px 15px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+#searchInput:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+#searchButton {
+  padding: 12px 25px;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#searchButton:hover {
+  background: #2980b9;
+}
+
+#searchButton:disabled {
+  background: #95a5a6;
+  cursor: not-allowed;
+}
+
+#searchResults {
+  margin-top: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  display: none;
+}
+
+.searchResultItem {
+  padding: 10px 15px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  transition: background 0.2s;
+}
+
+.searchResultItem:hover,
+.searchResultItem.selected {
+  background: #e3f2fd;
+  border-left: 3px solid #3498db;
+}
+
+.searchResultItem:last-child {
+  border-bottom: none;
+}
+
+.resultName {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.resultDetails {
+  font-size: 12px;
+  color: #7f8c8d;
+  margin-top: 3px;
+}
+
+/* 信息框样式 */
+#infoBox {
+  margin-top: 20px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 5px solid #3498db;
+}
+
+#currentCountry {
+  font-weight: bold;
+  color: #e74c3c;
+  font-size: 1.2em;
+}
+
+.credits {
+  text-align: center;
+  margin-top: 15px;
+  color: #95a5a6;
+  font-size: 0.9em;
+}
