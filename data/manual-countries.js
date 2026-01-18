@@ -5,156 +5,156 @@
 
 const manualCountries = {
   // 亚洲
-  "Singapore": {
+  Singapore: {
     name: "Singapore",
     chineseName: "新加坡",
     center: [1.3521, 103.8198],
     zoom: 11,
-    type: "country"
+    type: "country",
   },
-  "Brunei": {
+  Brunei: {
     name: "Brunei",
     chineseName: "文莱",
     center: [4.5353, 114.7277],
     zoom: 9,
-    type: "country"
+    type: "country",
   },
-  "Bahrain": {
+  Bahrain: {
     name: "Bahrain",
     chineseName: "巴林",
     center: [26.0667, 50.5577],
     zoom: 10,
-    type: "country"
+    type: "country",
   },
-  "Qatar": {
+  Qatar: {
     name: "Qatar",
     chineseName: "卡塔尔",
     center: [25.3548, 51.1839],
     zoom: 9,
-    type: "country"
+    type: "country",
   },
-  "Kuwait": {
+  Kuwait: {
     name: "Kuwait",
     chineseName: "科威特",
     center: [29.3117, 47.4818],
     zoom: 9,
-    type: "country"
+    type: "country",
   },
-  "Maldives": {
+  Maldives: {
     name: "Maldives",
     chineseName: "马尔代夫",
     center: [3.2028, 73.2207],
     zoom: 8,
-    type: "country"
+    type: "country",
   },
   "East Timor": {
     name: "East Timor",
     chineseName: "东帝汶",
     center: [-8.8742, 125.7275],
     zoom: 9,
-    type: "country"
+    type: "country",
   },
-  "Palestine": {
+  Palestine: {
     name: "Palestine",
     chineseName: "巴勒斯坦",
     center: [31.9522, 35.2332],
     zoom: 9,
-    type: "region"
+    type: "region",
   },
 
   // 欧洲
-  "Monaco": {
+  Monaco: {
     name: "Monaco",
     chineseName: "摩纳哥",
     center: [43.7384, 7.4246],
     zoom: 13,
-    type: "country"
+    type: "country",
   },
-  "Vatican": {
+  Vatican: {
     name: "Vatican",
     chineseName: "梵蒂冈",
     center: [41.9029, 12.4534],
     zoom: 15,
-    type: "region"
+    type: "region",
   },
   "San Marino": {
     name: "San Marino",
     chineseName: "圣马力诺",
     center: [43.9424, 12.4578],
     zoom: 12,
-    type: "country"
+    type: "country",
   },
-  "Malta": {
+  Malta: {
     name: "Malta",
     chineseName: "马耳他",
     center: [35.9375, 14.3754],
     zoom: 10,
-    type: "country"
+    type: "country",
   },
-  "Liechtenstein": {
+  Liechtenstein: {
     name: "Liechtenstein",
     chineseName: "列支敦士登",
-    center: [47.1660, 9.5554],
+    center: [47.166, 9.5554],
     zoom: 10,
-    type: "country"
+    type: "country",
   },
-  "Andorra": {
+  Andorra: {
     name: "Andorra",
     chineseName: "安道尔",
     center: [42.5063, 1.5218],
     zoom: 11,
-    type: "country"
+    type: "country",
   },
-  "Cyprus": {
+  Cyprus: {
     name: "Cyprus",
     chineseName: "塞浦路斯",
     center: [35.1264, 33.4299],
     zoom: 9,
-    type: "country"
+    type: "country",
   },
-  "Luxembourg": {
+  Luxembourg: {
     name: "Luxembourg",
     chineseName: "卢森堡",
     center: [49.8153, 6.1296],
     zoom: 9,
-    type: "country"
+    type: "country",
   },
 
   // 非洲
-  "Comoros": {
+  Comoros: {
     name: "Comoros",
     chineseName: "科摩罗",
     center: [-11.6455, 43.3333],
     zoom: 9,
-    type: "country"
+    type: "country",
   },
-  "Mauritius": {
+  Mauritius: {
     name: "Mauritius",
     chineseName: "毛里求斯",
     center: [-20.3484, 57.5522],
     zoom: 9,
-    type: "country"
+    type: "country",
   },
-  "Seychelles": {
+  Seychelles: {
     name: "Seychelles",
     chineseName: "塞舌尔",
-    center: [-4.6796, 55.4920],
+    center: [-4.6796, 55.492],
     zoom: 9,
-    type: "country"
+    type: "country",
   },
   "Sao Tome and Principe": {
     name: "Sao Tome and Principe",
     chineseName: "圣多美和普林西比",
     center: [0.3365, 6.6271],
     zoom: 9,
-    type: "country"
+    type: "country",
   },
   "Cabo Verde": {
     name: "Cabo Verde",
     chineseName: "佛得角",
     center: [16.5388, -23.0418],
     zoom: 8,
-    type: "country"
+    type: "country",
   },
 
   // 加勒比海地区
@@ -163,134 +163,134 @@ const manualCountries = {
     chineseName: "安提瓜和巴布达",
     center: [17.0608, -61.7964],
     zoom: 10,
-    type: "country"
+    type: "country",
   },
-  "Barbados": {
+  Barbados: {
     name: "Barbados",
     chineseName: "巴巴多斯",
     center: [13.1939, -59.5432],
     zoom: 10,
-    type: "country"
+    type: "country",
   },
-  "Dominica": {
+  Dominica: {
     name: "Dominica",
     chineseName: "多米尼克",
-    center: [15.4150, -61.3710],
+    center: [15.415, -61.371],
     zoom: 10,
-    type: "country"
+    type: "country",
   },
-  "Grenada": {
+  Grenada: {
     name: "Grenada",
     chineseName: "格林纳达",
-    center: [12.1165, -61.6790],
+    center: [12.1165, -61.679],
     zoom: 10,
-    type: "country"
+    type: "country",
   },
   "Saint Kitts and Nevis": {
     name: "Saint Kitts and Nevis",
     chineseName: "圣基茨和尼维斯",
-    center: [17.3578, -62.7830],
+    center: [17.3578, -62.783],
     zoom: 10,
-    type: "country"
+    type: "country",
   },
   "Saint Lucia": {
     name: "Saint Lucia",
     chineseName: "圣卢西亚",
     center: [13.9094, -60.9789],
     zoom: 10,
-    type: "country"
+    type: "country",
   },
   "Saint Vincent and the Grenadines": {
     name: "Saint Vincent and the Grenadines",
     chineseName: "圣文森特和格林纳丁斯",
     center: [12.9843, -61.2872],
     zoom: 10,
-    type: "country"
+    type: "country",
   },
   "Trinidad and Tobago": {
     name: "Trinidad and Tobago",
     chineseName: "特立尼达和多巴哥",
     center: [10.6918, -61.2225],
     zoom: 9,
-    type: "country"
+    type: "country",
   },
 
   // 太平洋岛国
-  "Fiji": {
+  Fiji: {
     name: "Fiji",
     chineseName: "斐济",
-    center: [-17.7134, 178.0650],
+    center: [-17.7134, 178.065],
     zoom: 8,
-    type: "country"
+    type: "country",
   },
-  "Kiribati": {
+  Kiribati: {
     name: "Kiribati",
     chineseName: "基里巴斯",
-    center: [-3.3704, -168.7340],
+    center: [-3.3704, -168.734],
     zoom: 7,
-    type: "country"
+    type: "country",
   },
   "Marshall Islands": {
     name: "Marshall Islands",
     chineseName: "马绍尔群岛",
     center: [7.1315, 171.1845],
     zoom: 8,
-    type: "country"
+    type: "country",
   },
-  "Micronesia": {
+  Micronesia: {
     name: "Micronesia",
     chineseName: "密克罗尼西亚",
     center: [7.4256, 150.5508],
     zoom: 8,
-    type: "country"
+    type: "country",
   },
-  "Nauru": {
+  Nauru: {
     name: "Nauru",
     chineseName: "瑙鲁",
     center: [-0.5228, 166.9315],
     zoom: 11,
-    type: "country"
+    type: "country",
   },
-  "Palau": {
+  Palau: {
     name: "Palau",
     chineseName: "帕劳",
-    center: [7.5150, 134.5825],
+    center: [7.515, 134.5825],
     zoom: 9,
-    type: "country"
+    type: "country",
   },
-  "Samoa": {
+  Samoa: {
     name: "Samoa",
     chineseName: "萨摩亚",
-    center: [-13.7590, -172.1046],
+    center: [-13.759, -172.1046],
     zoom: 9,
-    type: "country"
+    type: "country",
   },
   "Solomon Islands": {
     name: "Solomon Islands",
     chineseName: "所罗门群岛",
     center: [-9.6457, 160.1562],
     zoom: 8,
-    type: "country"
+    type: "country",
   },
-  "Tonga": {
+  Tonga: {
     name: "Tonga",
     chineseName: "汤加",
-    center: [-21.1790, -175.1982],
+    center: [-21.179, -175.1982],
     zoom: 8,
-    type: "country"
+    type: "country",
   },
-  "Tuvalu": {
+  Tuvalu: {
     name: "Tuvalu",
     chineseName: "图瓦卢",
     center: [-7.1095, 177.6493],
     zoom: 9,
-    type: "country"
+    type: "country",
   },
-  "Vanuatu": {
+  Vanuatu: {
     name: "Vanuatu",
     chineseName: "瓦努阿图",
     center: [-15.3767, 166.9592],
     zoom: 8,
-    type: "country"
-  }
+    type: "country",
+  },
 };

@@ -17,10 +17,14 @@ function loadCountryData(onSuccess, onError) {
   const loadingControl = createLoadingControl();
 
   // 从配置获取 GeoJSON 数据源 URL
-  const geoJsonUrl = get("geoJson.url",
-    "https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json"
+  const geoJsonUrl = get(
+    "geoJson.url",
+    "https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json",
   );
-  const loadingErrorText = get("ui.loadingErrorText", "❌ 加载国家数据失败，请刷新重试");
+  const loadingErrorText = get(
+    "ui.loadingErrorText",
+    "❌ 加载国家数据失败，请刷新重试",
+  );
 
   fetch(geoJsonUrl)
     .then((response) => {
@@ -33,12 +37,14 @@ function loadCountryData(onSuccess, onError) {
       // 数据加载成功，移除加载提示
       map.removeControl(loadingControl);
 
-      console.log(`成功加载 ${worldGeoJSON.features.length} 个国家/地区的边界数据`);
+      console.log(
+        `成功加载 ${worldGeoJSON.features.length} 个国家/地区的边界数据`,
+      );
 
       // 创建国家图层
       countriesLayer = L.geoJSON(worldGeoJSON, {
         style: defaultCountryStyle,
-        onEachFeature: setupCountryEvents
+        onEachFeature: setupCountryEvents,
       }).addTo(map);
 
       console.log("国家边界数据加载完成");
@@ -64,33 +70,51 @@ function loadCountryData(onSuccess, onError) {
  * 默认国家样式
  */
 function defaultCountryStyle(feature) {
+  const defaultFill = get("colors.country.default.fillColor", "#95a5a6");
+  const defaultBorder = get("colors.country.default.borderColor", "white");
+  const defaultOpacity = get("colors.country.default.fillOpacity", 0.7);
+  const defaultWeight = get("colors.country.default.weight", 1);
+
   return {
-    fillColor: "#95a5a6",
-    weight: 1,
+    fillColor: defaultFill,
+    weight: defaultWeight,
     opacity: 1,
-    color: "white",
-    fillOpacity: 0.7,
+    color: defaultBorder,
+    fillOpacity: defaultOpacity,
   };
 }
 
 /**
  * 高亮样式
  */
-const highlightStyle = {
-  weight: 2,
-  color: "#3498db",
-  fillOpacity: 0.9,
-};
+function getHighlightStyle() {
+  const hoverBorder = get("colors.country.hover.borderColor", "#3498db");
+  const hoverOpacity = get("colors.country.hover.fillOpacity", 0.9);
+  const hoverWeight = get("colors.country.hover.weight", 2);
+
+  return {
+    weight: hoverWeight,
+    color: hoverBorder,
+    fillOpacity: hoverOpacity,
+  };
+}
 
 /**
  * 选中样式
  */
-const selectedStyle = {
-  fillColor: "#e74c3c",
-  weight: 2,
-  color: "#c0392b",
-  fillOpacity: 0.9,
-};
+function getSelectedStyle() {
+  const selectedFill = get("colors.country.selected.fillColor", "#e74c3c");
+  const selectedBorder = get("colors.country.selected.borderColor", "#c0392b");
+  const selectedOpacity = get("colors.country.selected.fillOpacity", 0.9);
+  const selectedWeight = get("colors.country.selected.weight", 2);
+
+  return {
+    fillColor: selectedFill,
+    weight: selectedWeight,
+    color: selectedBorder,
+    fillOpacity: selectedOpacity,
+  };
+}
 
 /**
  * 为每个国家设置交互事件
@@ -109,7 +133,7 @@ function setupCountryEvents(feature, layer) {
     // 鼠标悬停事件
     layer.on("mouseover", function (e) {
       if (layer !== currentlyHighlighted) {
-        layer.setStyle(highlightStyle);
+        layer.setStyle(getHighlightStyle());
         layer.bringToFront();
       }
       layer
@@ -151,7 +175,7 @@ function selectCountry(layer) {
   resetPreviousHighlight();
 
   // 高亮当前国家
-  layer.setStyle(selectedStyle);
+  layer.setStyle(getSelectedStyle());
   layer.bringToFront();
 
   // 更新引用
@@ -178,7 +202,7 @@ function selectCountry(layer) {
     const center = bounds.getCenter();
     map.setView(center, smallCountryDefaultZoom, {
       animate: true,
-      duration: 1
+      duration: 1,
     });
   } else {
     // 对于正常大小的国家，使用 fitBounds
@@ -201,7 +225,9 @@ function selectCountry(layer) {
  */
 function resetPreviousHighlight() {
   if (currentlyHighlighted) {
-    currentlyHighlighted.setStyle(defaultCountryStyle(currentlyHighlighted.feature));
+    currentlyHighlighted.setStyle(
+      defaultCountryStyle(currentlyHighlighted.feature),
+    );
     syncSmallCountryMarker(currentlyHighlighted, false);
   }
 }
@@ -214,19 +240,32 @@ function resetPreviousHighlight() {
 function syncSmallCountryMarker(layer, isSelected) {
   if (layer.smallCountryMarker) {
     if (isSelected) {
+      const selectedFill = get("colors.marker.selected.fillColor", "#e74c3c");
+      const selectedBorder = get(
+        "colors.marker.selected.borderColor",
+        "#c0392b",
+      );
+      const selectedOpacity = get("colors.marker.selected.fillOpacity", 0.7);
+      const selectedWeight = get("colors.marker.selected.weight", 3);
+
       layer.smallCountryMarker.setStyle({
-        fillColor: "#e74c3c",
-        color: "#c0392b",
-        fillOpacity: 0.7,
-        weight: 3
+        fillColor: selectedFill,
+        color: selectedBorder,
+        fillOpacity: selectedOpacity,
+        weight: selectedWeight,
       });
       layer.smallCountryMarker.bringToFront();
     } else {
+      const defaultFill = get("colors.marker.default.fillColor", "#3498db");
+      const defaultBorder = get("colors.marker.default.borderColor", "#2980b9");
+      const defaultOpacity = get("colors.marker.default.fillOpacity", 0.3);
+      const defaultWeight = get("colors.marker.default.weight", 2);
+
       layer.smallCountryMarker.setStyle({
-        fillColor: "#3498db",
-        color: "#2980b9",
-        fillOpacity: 0.3,
-        weight: 2
+        fillColor: defaultFill,
+        color: defaultBorder,
+        fillOpacity: defaultOpacity,
+        weight: defaultWeight,
       });
     }
   }
@@ -273,7 +312,7 @@ function highlightCountryByName(englishName, chineseName) {
       resetPreviousHighlight();
 
       // 高亮当前国家
-      layer.setStyle(selectedStyle);
+      layer.setStyle(getSelectedStyle());
       layer.bringToFront();
 
       currentlyHighlighted = layer;
@@ -291,7 +330,7 @@ function highlightCountryByName(englishName, chineseName) {
         const center = bounds.getCenter();
         map.setView(center, smallCountryDefaultZoom, {
           animate: true,
-          duration: 1
+          duration: 1,
         });
       } else {
         // 对于正常大小的国家，使用 fitBounds
@@ -303,7 +342,9 @@ function highlightCountryByName(englishName, chineseName) {
       }
 
       // 更新信息框
-      updateInfoBox(chineseName ? `${chineseName} (${englishName})` : englishName);
+      updateInfoBox(
+        chineseName ? `${chineseName} (${englishName})` : englishName,
+      );
 
       found = true;
 

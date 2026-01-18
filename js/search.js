@@ -28,12 +28,15 @@ async function searchLocation(query) {
     return;
   }
 
-  // 从配置获取 UI 文本
+  // 从配置获取 UI 文本和颜色
   const searchingText = get("ui.searchingText", "搜索中...");
   const searchButtonDisabledText = get("ui.searchButtonDisabledText", "搜索");
   const timeoutText = get("ui.timeoutText", "请求超时，请重试");
-  const searchingHtml = `<div style="padding: 15px; color: #3498db; text-align: center;">⏳ ${searchingText}</div>`;
-  const timeoutHtml = `<div style="padding: 15px; color: #e74c3c;">⏱️ ${timeoutText}</div>`;
+  const searchingColor = get("colors.search.searchingColor", "#3498db");
+  const errorColor = get("colors.search.errorColor", "#e74c3c");
+  const warningColor = get("colors.search.warningColor", "#e67e22");
+  const searchingHtml = `<div style="padding: 15px; color: ${searchingColor}; text-align: center;">⏳ ${searchingText}</div>`;
+  const timeoutHtml = `<div style="padding: 15px; color: ${errorColor};">⏱️ ${timeoutText}</div>`;
 
   // 中止之前的请求
   if (searchAbortController) {
@@ -79,12 +82,15 @@ async function searchLocation(query) {
   // 如果没有匹配的国家，检查是否需要等待GeoJSON数据加载
   if (!getCountriesLayer()) {
     const manualCount = Object.keys(manualCountries).length;
-    const manualList = Object.keys(manualCountries).slice(0, 5)
-      .map(n => manualCountries[n].chineseName)
+    const manualList = Object.keys(manualCountries)
+      .slice(0, 5)
+      .map((n) => manualCountries[n].chineseName)
       .join("、");
-    const dataLoadingText = get("ui.dataLoadingText", "⏳ 边界数据正在加载中，请稍后再试...");
-    searchResults.innerHTML =
-      `<div style="padding: 15px; color: #e67e22;">
+    const dataLoadingText = get(
+      "ui.dataLoadingText",
+      "⏳ 边界数据正在加载中，请稍后再试...",
+    );
+    searchResults.innerHTML = `<div style="padding: 15px; color: ${warningColor};">
         ${dataLoadingText}<br>
         <small>目前已手动定义 ${manualCount} 个（如：${manualList} 等），可以先搜索这些</small>
       </div>`;
@@ -94,15 +100,21 @@ async function searchLocation(query) {
 
   // 使用Nominatim API搜索城市
   try {
-    const citySearchUrl = get("search.citySearch.url", "https://nominatim.openstreetmap.org/search");
+    const citySearchUrl = get(
+      "search.citySearch.url",
+      "https://nominatim.openstreetmap.org/search",
+    );
     const citySearchLimit = get("search.citySearch.limit", 5);
-    const citySearchConfig = get("search.citySearch", { url: citySearchUrl, limit: citySearchLimit });
+    const citySearchConfig = get("search.citySearch", {
+      url: citySearchUrl,
+      limit: citySearchLimit,
+    });
 
     const response = await fetch(
       `${citySearchConfig.url}?format=json&q=${encodeURIComponent(
-        query
+        query,
       )}&limit=${citySearchConfig.limit}&addressdetails=1`,
-      { signal: searchAbortController.signal }
+      { signal: searchAbortController.signal },
     );
 
     // 取消超时（如果请求成功完成）
@@ -117,22 +129,23 @@ async function searchLocation(query) {
     if (data.length > 0) {
       displayCityResults(data);
     } else {
-      searchResults.innerHTML =
-        `<div style="padding: 15px; color: #e74c3c;">${noResultsText}</div>`;
+      searchResults.innerHTML = `<div style="padding: 15px; color: ${errorColor};">${noResultsText}</div>`;
       searchResults.style.display = "block";
     }
   } catch (error) {
     // 如果是请求被中止（超时或新搜索），不显示错误
-    if (error.name === 'AbortError') {
+    if (error.name === "AbortError") {
       console.log("搜索请求已中止");
       return;
     }
 
     console.error("搜索错误:", error);
 
-    const networkErrorText = get("ui.networkErrorText", "网络连接失败，请检查网络后重试");
-    searchResults.innerHTML =
-      `<div style="padding: 15px; color: #e74c3c;">${networkErrorText}</div>`;
+    const networkErrorText = get(
+      "ui.networkErrorText",
+      "网络连接失败，请检查网络后重试",
+    );
+    searchResults.innerHTML = `<div style="padding: 15px; color: ${errorColor};">${networkErrorText}</div>`;
     searchResults.style.display = "block";
   } finally {
     finishSearch();
@@ -203,14 +216,19 @@ function displayCountryResults(results) {
   const searchLimit = get("search.limit", 8);
   const slicedResults = results.slice(0, searchLimit);
   searchResults.innerHTML = slicedResults
-    .map((r, index) => `
+    .map(
+      (r, index) => `
       <div class="searchResultItem" data-index="${index}" data-type="country" data-english="${r.englishName}" data-chinese="${r.chineseName}">
         <div class="resultName">${r.chineseName} (${r.englishName})</div>
       </div>
-    `).join("");
+    `,
+    )
+    .join("");
 
   // 存储结果项
-  currentResultItems = Array.from(searchResults.querySelectorAll(".searchResultItem"));
+  currentResultItems = Array.from(
+    searchResults.querySelectorAll(".searchResultItem"),
+  );
 
   // 添加点击事件
   currentResultItems.forEach((item) => {
@@ -250,7 +268,9 @@ function displayCityResults(results) {
     .join("");
 
   // 存储结果项
-  currentResultItems = Array.from(searchResults.querySelectorAll(".searchResultItem"));
+  currentResultItems = Array.from(
+    searchResults.querySelectorAll(".searchResultItem"),
+  );
 
   // 添加点击事件
   currentResultItems.forEach((item) => {
@@ -349,7 +369,10 @@ function highlightCountryAtLocation(lat, lon, countryName, countryCode) {
 
   // 如果有目标国家名称，直接高亮
   if (targetCountryName) {
-    highlightCountryByName(targetCountryName, countryNameMap[targetCountryName]);
+    highlightCountryByName(
+      targetCountryName,
+      countryNameMap[targetCountryName],
+    );
     found = true;
   }
 
@@ -425,7 +448,10 @@ function setupSearchEvents() {
       }
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
-      if (searchResults.style.display === "block" && selectedIndex < currentResultItems.length - 1) {
+      if (
+        searchResults.style.display === "block" &&
+        selectedIndex < currentResultItems.length - 1
+      ) {
         selectedIndex++;
         updateSelection();
       }
@@ -446,7 +472,10 @@ function setupSearchEvents() {
 
   // 点击其他地方关闭搜索结果
   document.addEventListener("click", (e) => {
-    if (!e.target.closest("#searchBox") && !e.target.closest("#searchResults")) {
+    if (
+      !e.target.closest("#searchBox") &&
+      !e.target.closest("#searchResults")
+    ) {
       searchResults.style.display = "none";
       selectedIndex = -1;
       currentResultItems = [];

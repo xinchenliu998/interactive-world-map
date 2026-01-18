@@ -8,38 +8,82 @@ const appConfig = {
   map: {
     initialView: {
       center: [20, 0],
-      zoom: 2
+      zoom: 2,
     },
     zoom: {
       min: 2,
-      max: 19
+      max: 19,
     },
-    height: "680",
     tileLayer: {
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    },
   },
   geoJson: {
-    url: "https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json"
+    url: "https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json",
   },
   search: {
     timeout: 3000,
     limit: 8,
     citySearch: {
       url: "https://nominatim.openstreetmap.org/search",
-      limit: 5
-    }
+      limit: 5,
+    },
   },
   countries: {
     smallCountryThreshold: 0.5,
     smallCountryDefaultZoom: 10,
-    normalCountryPadding: [30, 30]
+    normalCountryPadding: [30, 30],
   },
-  manualCountries: {
-    defaultMarkerRadius: 15,
-    defaultMarkerColor: "#e74c3c",
-    defaultBorderColor: "#c0392b"
+  colors: {
+    country: {
+      default: {
+        fillColor: "#95a5a6",
+        borderColor: "white",
+        fillOpacity: 0.7,
+        weight: 1,
+      },
+      hover: {
+        borderColor: "#3498db",
+        fillOpacity: 0.9,
+        weight: 2,
+      },
+      selected: {
+        fillColor: "#e74c3c",
+        borderColor: "#c0392b",
+        fillOpacity: 0.9,
+        weight: 2,
+      },
+    },
+    marker: {
+      default: {
+        fillColor: "#3498db",
+        borderColor: "#2980b9",
+        fillOpacity: 0.3,
+        weight: 2,
+      },
+      hover: {
+        fillColor: "#e74c3c",
+        fillOpacity: 0.6,
+        weight: 3,
+      },
+      selected: {
+        fillColor: "#3ce764",
+        borderColor: "#c02b8c",
+        fillOpacity: 0.7,
+        weight: 3,
+      },
+    },
+    search: {
+      searchingColor: "#3498db",
+      errorColor: "#e74c3c",
+      warningColor: "#e67e22",
+    },
+    loadingControl: {
+      backgroundColor: "white",
+      shadowColor: "rgba(0, 0, 0, 0.2)",
+    },
   },
   ui: {
     title: "交互式世界地图",
@@ -55,8 +99,8 @@ const appConfig = {
     networkErrorText: "网络连接失败，请检查网络后重试",
     currentCountryDefaultText: "暂无，请点击地图选择",
     infoBoxInstructions: "鼠标悬停可预览，点击后变为红色高亮。",
-    infoBoxTip: "加载边界数据可能需要几秒钟，请稍候。"
-  }
+    infoBoxTip: "加载边界数据可能需要几秒钟，请稍候。",
+  },
 };
 
 /**

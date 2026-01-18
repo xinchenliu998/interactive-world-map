@@ -52,10 +52,54 @@ const appConfig = {
     smallCountryDefaultZoom: 10,
     normalCountryPadding: [30, 30]
   },
-  manualCountries: {
-    defaultMarkerRadius: 15,
-    defaultMarkerColor: "#e74c3c",
-    defaultBorderColor: "#c0392b"
+  colors: {
+    country: {
+      default: {
+        fillColor: "#95a5a6",
+        borderColor: "white",
+        fillOpacity: 0.7,
+        weight: 1
+      },
+      hover: {
+        borderColor: "#3498db",
+        fillOpacity: 0.9,
+        weight: 2
+      },
+      selected: {
+        fillColor: "#e74c3c",
+        borderColor: "#c0392b",
+        fillOpacity: 0.9,
+        weight: 2
+      }
+    },
+    marker: {
+      default: {
+        fillColor: "#3498db",
+        borderColor: "#2980b9",
+        fillOpacity: 0.3,
+        weight: 2
+      },
+      hover: {
+        fillColor: "#e74c3c",
+        fillOpacity: 0.6,
+        weight: 3
+      },
+      selected: {
+        fillColor: "#e74c3c",
+        borderColor: "#c0392b",
+        fillOpacity: 0.7,
+        weight: 3
+      }
+    },
+    search: {
+      searchingColor: "#3498db",
+      errorColor: "#e74c3c",
+      warningColor: "#e67e22"
+    },
+    loadingControl: {
+      backgroundColor: "white",
+      shadowColor: "rgba(0, 0, 0, 0.2)"
+    }
   },
   ui: {
     title: "交互式世界地图",
@@ -63,6 +107,7 @@ const appConfig = {
     searchButtonText: "搜索",
     searchingText: "搜索中...",
     searchButtonDisabledText: "搜索",
+    timeoutText: "请求超时，请重试",
     loadingText: "⏳ 正在加载国家数据...",
     loadingErrorText: "❌ 加载国家数据失败，请刷新重试",
     dataLoadingText: "⏳ 边界数据正在加载中，请稍后再试...",
@@ -97,15 +142,44 @@ const appConfig = {
 | | `smallCountryThreshold` | Area threshold for small countries | `0.5` |
 | | `smallCountryDefaultZoom` | Zoom level for small countries | `10` |
 | | `normalCountryPadding` | Padding for normal countries | `[30, 30]` |
-| **manualCountries** | | | |
-| | `defaultMarkerRadius` | Marker radius for manual countries | `15` |
-| | `defaultMarkerColor` | Fill color for selected markers | `#e74c3c` |
-| | `defaultBorderColor` | Border color for markers | `#c0392b` |
+| **colors.country** | | | |
+| | `default.fillColor` | Default fill color | `#95a5a6` |
+| | `default.borderColor` | Default border color | `white` |
+| | `default.fillOpacity` | Default fill opacity | `0.7` |
+| | `default.weight` | Default border weight | `1` |
+| | `hover.borderColor` | Hover border color | `#3498db` |
+| | `hover.fillOpacity` | Hover fill opacity | `0.9` |
+| | `hover.weight` | Hover border weight | `2` |
+| | `selected.fillColor` | Selected fill color | `#e74c3c` |
+| | `selected.borderColor` | Selected border color | `#c0392b` |
+| | `selected.fillOpacity` | Selected fill opacity | `0.9` |
+| | `selected.weight` | Selected border weight | `2` |
+| **colors.marker** | | | |
+| | `default.fillColor` | Marker default fill color | `#3498db` |
+| | `default.borderColor` | Marker default border color | `#2980b9` |
+| | `default.fillOpacity` | Marker default fill opacity | `0.3` |
+| | `default.weight` | Marker default border weight | `2` |
+| | `hover.fillColor` | Marker hover fill color | `#e74c3c` |
+| | `hover.fillOpacity` | Marker hover fill opacity | `0.6` |
+| | `hover.weight` | Marker hover border weight | `3` |
+| | `selected.fillColor` | Marker selected fill color | `#e74c3c` |
+| | `selected.borderColor` | Marker selected border color | `#c0392b` |
+| | `selected.fillOpacity` | Marker selected fill opacity | `0.7` |
+| | `selected.weight` | Marker selected border weight | `3` |
+| **colors.search** | | | |
+| | `searchingColor` | Searching state color | `#3498db` |
+| | `errorColor` | Error state color | `#e74c3c` |
+| | `warningColor` | Warning state color | `#e67e22` |
+| **colors.loadingControl** | | | |
+| | `backgroundColor` | Loading control background | `white` |
+| | `shadowColor` | Loading control shadow | `rgba(0, 0, 0, 0.2)` |
 | **ui** | | | |
 | | `title` | Page title | `交互式世界地图` |
 | | `searchPlaceholder` | Search input placeholder | `输入城市或国家名称...` |
 | | `searchButtonText` | Search button text | `搜索` |
 | | `searchingText` | Text shown during search | `搜索中...` |
+| | `searchButtonDisabledText` | Disabled button text | `搜索` |
+| | `timeoutText` | Timeout error text | `请求超时，请重试` |
 | | `loadingText` | Loading indicator text | `⏳ 正在加载国家数据...` |
 | | `loadingErrorText` | Error loading text | `❌ 加载国家数据失败，请刷新重试` |
 | | `dataLoadingText` | Text when GeoJSON not loaded | `⏳ 边界数据正在加载中，请稍后再试...` |
@@ -231,7 +305,7 @@ index.html
 
 - Adds circle markers for small countries with difficult-to-click areas
 - Manually defines countries not in GeoJSON (Singapore, Monaco, Vatican, etc.)
-- Uses config for marker appearance (radius, colors)
+- Uses `colors.marker` config for marker appearance
 - Key functions:
   - `addSmallCountryMarkers(countriesLayer)` - Add markers for small GeoJSON countries
   - `showManualCountryMarkers()` - Show manually defined country markers

@@ -30,58 +30,11 @@ open index.html
 - **Small Country Support / 小国支持** - Clickable markers for small nations / 为小国家添加可点击标记
 - **Configurable / 可配置** - All settings in `js/config.js` / 所有配置在配置文件中
 
----
-
-## Project Structure / 项目结构
-
-```
-map/
-├── index.html                 # Main entry / 主入口
-├── styles.css                # Styles / 样式
-├── data/                     # Data modules / 数据模块
-│   ├── country-names.js      # Name mappings / 名称映射
-│   ├── manual-countries.js   # Manual countries / 手动国家
-│   └── country-codes.js     # Country codes / 国家代码
-└── js/                      # App modules / 应用模块
-    ├── config.js            # Configuration / 配置
-    ├── map.js              # Map init / 地图初始化
-    ├── countries.js        # Country logic / 国家逻辑
-    ├── small-countries.js  # Small markers / 小国标记
-    └── search.js          # Search / 搜索功能
-```
-
----
-
 ## Configuration / 配置
 
 All configuration is in `js/config.js`. Edit this file to customize:
 
 所有配置在 `js/config.js` 中。编辑此文件可自定义：
-
-```javascript
-const appConfig = {
-  map: {
-    initialView: { center: [20, 0], zoom: 2 },
-    tileLayer: {
-      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-    }
-  },
-  geoJson: {
-    url: "https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json"
-  },
-  search: {
-    timeout: 3000,
-    limit: 8
-  },
-  ui: {
-    title: "交互式世界地图",
-    searchPlaceholder: "输入城市或国家名称...",
-    searchButtonText: "搜索",
-    searchingText: "搜索中...",
-    timeoutText: "请求超时，请重试"
-  }
-};
-```
 
 ---
 
@@ -105,11 +58,11 @@ For detailed technical documentation, architecture, API reference, and developme
 
 ## Data Sources / 数据来源
 
-| Type / 类型 | Source / 来源 |
-|------------|--------------|
+| Type / 类型                   | Source / 来源                                                   |
+| ----------------------------- | --------------------------------------------------------------- |
 | Country Boundaries / 国家边界 | [johan/world.geo.json](https://github.com/johan/world.geo.json) |
-| Map Tiles / 地图瓦片 | [OpenStreetMap](https://www.openstreetmap.org/) |
-| Location Search / 位置搜索 | [Nominatim API](https://nominatim.openstreetmap.org/) |
+| Map Tiles / 地图瓦片          | [OpenStreetMap](https://www.openstreetmap.org/)                 |
+| Location Search / 位置搜索    | [Nominatim API](https://nominatim.openstreetmap.org/)           |
 
 ---
 

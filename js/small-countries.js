@@ -40,7 +40,13 @@ function addSmallCountryMarkers(countriesLayer) {
  * @param {number} height - 国家高度
  * @param {Object} smallCountriesLayer - 标记图层组
  */
-function createSmallCountryMarker(layer, area, width, height, smallCountriesLayer) {
+function createSmallCountryMarker(
+  layer,
+  area,
+  width,
+  height,
+  smallCountriesLayer,
+) {
   const center = layer.getBounds().getCenter();
   const englishName = layer.feature.properties.name;
   const bilingualName = getBilingualName(englishName);
@@ -48,28 +54,38 @@ function createSmallCountryMarker(layer, area, width, height, smallCountriesLaye
   // 计算圆形标记的半径（基于国家大小，但有最小值）
   const radius = Math.max(Math.min(width, height) * 5, 3);
 
+  // 从配置获取标记默认样式
+  const defaultFill = get("colors.marker.default.fillColor", "#3498db");
+  const defaultBorder = get("colors.marker.default.borderColor", "#2980b9");
+  const defaultOpacity = get("colors.marker.default.fillOpacity", 0.3);
+  const defaultWeight = get("colors.marker.default.weight", 2);
+
   const marker = L.circleMarker(center, {
     radius: radius,
-    fillColor: "#3498db",
-    color: "#2980b9",
-    weight: 2,
+    fillColor: defaultFill,
+    color: defaultBorder,
+    weight: defaultWeight,
     opacity: 0.8,
-    fillOpacity: 0.3,
-    bubblingMouseEvents: false // 防止事件冒泡到地图
+    fillOpacity: defaultOpacity,
+    bubblingMouseEvents: false, // 防止事件冒泡到地图
   });
 
   // 鼠标悬停效果
   marker.on("mouseover", function () {
     if (layer !== getCurrentlyHighlighted()) {
+      const hoverFill = get("colors.marker.hover.fillColor", "#e74c3c");
+      const hoverOpacity = get("colors.marker.hover.fillOpacity", 0.6);
+      const hoverWeight = get("colors.marker.hover.weight", 3);
+
       this.setStyle({
-        fillColor: "#e74c3c",
-        fillOpacity: 0.6,
-        weight: 3
+        fillColor: hoverFill,
+        fillOpacity: hoverOpacity,
+        weight: hoverWeight,
       });
     }
     this.bindTooltip(bilingualName, {
       permanent: false,
-      direction: "top"
+      direction: "top",
     }).openTooltip();
     map.getContainer().style.cursor = "pointer";
   });
@@ -78,9 +94,9 @@ function createSmallCountryMarker(layer, area, width, height, smallCountriesLaye
   marker.on("mouseout", function () {
     if (layer !== getCurrentlyHighlighted()) {
       this.setStyle({
-        fillColor: "#3498db",
-        fillOpacity: 0.3,
-        weight: 2
+        fillColor: defaultFill,
+        fillOpacity: defaultOpacity,
+        weight: defaultWeight,
       });
     }
     this.closeTooltip();
@@ -117,20 +133,26 @@ function createManualCountryMarker(data) {
     map.removeLayer(window[`manualMarker_${data.name}`]);
   }
 
+  // 从配置获取标记选中样式
+  const selectedFill = get("colors.marker.selected.fillColor", "#e74c3c");
+  const selectedBorder = get("colors.marker.selected.borderColor", "#c0392b");
+  const selectedOpacity = get("colors.marker.selected.fillOpacity", 0.7);
+  const selectedWeight = get("colors.marker.selected.weight", 3);
+
   // 添加新的圆形标记
   const marker = L.circleMarker(data.center, {
     radius: 15,
-    fillColor: "#e74c3c",
-    color: "#c0392b",
-    weight: 3,
+    fillColor: selectedFill,
+    color: selectedBorder,
+    weight: selectedWeight,
     opacity: 1,
-    fillOpacity: 0.7
+    fillOpacity: selectedOpacity,
   }).addTo(map);
 
-  marker.bindTooltip(
-    `${data.chineseName} (${data.name})`,
-    { permanent: false, direction: "top" }
-  );
+  marker.bindTooltip(`${data.chineseName} (${data.name})`, {
+    permanent: false,
+    direction: "top",
+  });
 
   // 点击事件
   marker.on("click", function (e) {
@@ -139,16 +161,16 @@ function createManualCountryMarker(data) {
     resetManualMarkers();
     // 高亮当前标记
     this.setStyle({
-      fillColor: "#e74c3c",
-      color: "#c0392b",
-      weight: 3,
-      fillOpacity: 0.7
+      fillColor: selectedFill,
+      color: selectedBorder,
+      weight: selectedWeight,
+      fillOpacity: selectedOpacity,
     });
     this.openTooltip();
     // 缩放到该位置
     map.setView(data.center, data.zoom, {
       animate: true,
-      duration: 1
+      duration: 1,
     });
     // 更新信息框
     updateInfoBox(`${data.chineseName} (${data.name})`);
@@ -161,15 +183,20 @@ function createManualCountryMarker(data) {
  * 重置所有手动标记的样式
  */
 function resetManualMarkers() {
+  const selectedFill = get("colors.marker.selected.fillColor", "#e74c3c");
+  const selectedBorder = get("colors.marker.selected.borderColor", "#c0392b");
+  const selectedOpacity = get("colors.marker.selected.fillOpacity", 0.7);
+  const selectedWeight = get("colors.marker.selected.weight", 3);
+
   for (const name of Object.keys(manualCountries)) {
     const marker = window[`manualMarker_${name}`];
     if (marker) {
       marker.setStyle({
-        fillColor: "#e74c3c",
-        color: "#c0392b",
-        weight: 3,
+        fillColor: selectedFill,
+        color: selectedBorder,
+        weight: selectedWeight,
         opacity: 1,
-        fillOpacity: 0.7
+        fillOpacity: selectedOpacity,
       });
       marker.closeTooltip();
     }
@@ -188,15 +215,20 @@ function zoomToManualCountry(englishName, chineseName) {
   // 重置其他手动标记
   resetManualMarkers();
 
+  const selectedFill = get("colors.marker.selected.fillColor", "#e74c3c");
+  const selectedBorder = get("colors.marker.selected.borderColor", "#c0392b");
+  const selectedOpacity = get("colors.marker.selected.fillOpacity", 0.7);
+  const selectedWeight = get("colors.marker.selected.weight", 3);
+
   // 高亮当前标记
   const marker = window[`manualMarker_${englishName}`];
   if (marker) {
     marker.setStyle({
-      fillColor: "#e74c3c",
-      color: "#c0392b",
-      weight: 3,
+      fillColor: selectedFill,
+      color: selectedBorder,
+      weight: selectedWeight,
       opacity: 1,
-      fillOpacity: 0.7
+      fillOpacity: selectedOpacity,
     });
     marker.openTooltip();
   } else {
@@ -206,7 +238,7 @@ function zoomToManualCountry(englishName, chineseName) {
   // 缩放到该位置
   map.setView(data.center, data.zoom, {
     animate: true,
-    duration: 1
+    duration: 1,
   });
 
   // 更新信息框

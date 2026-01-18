@@ -16,7 +16,8 @@ function initMap(elementId = "map") {
   const zoomConfig = get("map.zoom", { min: 2, max: 19 });
   const tileLayerConfig = get("map.tileLayer", {
     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   });
 
   // 创建地图实例
@@ -30,9 +31,7 @@ function initMap(elementId = "map") {
   }).addTo(map);
 
   // 添加比例尺控件
-  L.control
-    .scale({ position: "bottomleft", imperial: false })
-    .addTo(map);
+  L.control.scale({ position: "bottomleft", imperial: false }).addTo(map);
 
   return map;
 }
@@ -50,12 +49,16 @@ function getMap() {
  */
 function createLoadingControl() {
   const loadingText = get("ui.loadingText", "⏳ 正在加载国家数据...");
+  const bgColor = get("colors.loadingControl.backgroundColor", "white");
+  const shadowColor = get(
+    "colors.loadingControl.shadowColor",
+    "rgba(0, 0, 0, 0.2)",
+  );
   const loadingMsg = L.control({ position: "topright" });
   loadingMsg.onAdd = function () {
     this._div = L.DomUtil.create("div", "loading-msg");
     this._div.innerHTML = loadingText;
-    this._div.style.cssText =
-      "background: white; padding: 8px; border-radius: 4px; box-shadow: 0 0 10px rgba(0,0,0,0.2);";
+    this._div.style.cssText = `background: ${bgColor}; padding: 8px; border-radius: 4px; box-shadow: 0 0 10px ${shadowColor};`;
     return this._div;
   };
   loadingMsg.addTo(map);

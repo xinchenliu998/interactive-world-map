@@ -20,64 +20,189 @@ Configuration is defined in `js/config.js` and loaded synchronously via script t
 // js/config.js 中的配置对象结构：
 const appConfig = {
   map: {
-    initialView: { "center": [20, 0], "zoom": 2 },
-    zoom: { "min": 2, "max": 19 },
-    tileLayer: { "url": "...", "attribution": "..." }
+    initialView: { center: [20, 0], zoom: 2 },
+    zoom: { min: 2, max: 19 },
+    tileLayer: { url: "...", attribution: "..." },
   },
-  geoJson: { "url": "..." },
+  geoJson: { url: "..." },
   search: {
-    "timeout": 3000,
-    "limit": 8,
-    "citySearch": { "url": "...", "limit": 5 }
+    timeout: 3000,
+    limit: 8,
+    citySearch: { url: "...", limit: 5 },
   },
   countries: {
-    "smallCountryThreshold": 0.5,
-    "smallCountryDefaultZoom": 10,
-    "normalCountryPadding": [30, 30]
+    smallCountryThreshold: 0.5,
+    smallCountryDefaultZoom: 10,
+    normalCountryPadding: [30, 30],
   },
-  manualCountries: { "defaultMarkerRadius": 15, "defaultMarkerColor": "#e74c3c", "defaultBorderColor": "#c0392b" },
+  colors: {
+    country: {
+      default: {
+        fillColor: "#95a5a6",
+        borderColor: "white",
+        fillOpacity: 0.7,
+        weight: 1,
+      },
+      hover: { borderColor: "#3498db", fillOpacity: 0.9, weight: 2 },
+      selected: {
+        fillColor: "#e74c3c",
+        borderColor: "#c0392b",
+        fillOpacity: 0.9,
+        weight: 2,
+      },
+    },
+    marker: {
+      default: {
+        fillColor: "#3498db",
+        borderColor: "#2980b9",
+        fillOpacity: 0.3,
+        weight: 2,
+      },
+      hover: { fillColor: "#e74c3c", fillOpacity: 0.6, weight: 3 },
+      selected: {
+        fillColor: "#3ce764",
+        borderColor: "#c02b8c",
+        fillOpacity: 0.7,
+        weight: 3,
+      },
+    },
+    search: {
+      searchingColor: "#3498db",
+      errorColor: "#e74c3c",
+      warningColor: "#e67e22",
+    },
+    loadingControl: {
+      backgroundColor: "white",
+      shadowColor: "rgba(0, 0, 0, 0.2)",
+    },
+  },
   ui: {
-    "title": "交互式世界地图",
-    "searchPlaceholder": "输入城市或国家名称...",
-    "searchButtonText": "搜索",
-    ...
-  }
+    title: "交互式世界地图",
+    searchPlaceholder: "输入城市或国家名称（支持中文/英文），按回车搜索...",
+    searchButtonText: "搜索",
+    searchingText: "搜索中...",
+    searchButtonDisabledText: "搜索",
+    timeoutText: "请求超时，请重试",
+    loadingText: "⏳ 正在加载国家数据...",
+    loadingErrorText: "❌ 加载国家数据失败，请刷新重试",
+    dataLoadingText: "⏳ 边界数据正在加载中，请稍后再试...",
+    noResultsText: "未找到匹配的地点",
+    networkErrorText: "网络连接失败，请检查网络后重试",
+    currentCountryDefaultText: "暂无，请点击地图选择",
+    infoBoxInstructions: "鼠标悬停可预览，点击后变为红色高亮。",
+    infoBoxTip: "加载边界数据可能需要几秒钟，请稍候。",
+  },
 };
 ```
 
 ### 配置项说明 / Configuration Options
 
-| 配置节 / Section    | 配置项 / Key              | 默认值 / Default | 说明 / Description |
-| :------------------ | :------------------------ | :--------------- | :----------------- |
-| **map**             | `initialView.center`      | `[20, 0]`        | 地图初始中心坐标   |
-|                     | `initialView.zoom`        | `2`              | 初始缩放级别       |
-|                     | `zoom.min`                | `2`              | 最小缩放级别       |
-|                     | `zoom.max`                | `19`             | 最大缩放级别       |
-|                     | `tileLayer.url`           | OSM URL          | 地图瓦片模板       |
-|                     | `tileLayer.attribution`   | ODbL             | 地图署名           |
-| **geoJson**         | `url`                     | GitHub URL       | GeoJSON 数据源地址 |
-| **search**          | `timeout`                 | `3000`          | 搜索超时（毫秒）   |
-|                     | `limit`                   | `8`              | 搜索结果数量       |
-|                     | `citySearch.url`          | Nominatim        | 城市搜索 API 地址  |
-|                     | `citySearch.limit`        | `5`              | 城市搜索结果数量   |
-| **countries**       | `smallCountryThreshold`   | `0.5`            | 小国家面积阈值     |
-|                     | `smallCountryDefaultZoom` | `10`             | 小国家默认缩放级别 |
-|                     | `normalCountryPadding`    | `[30, 30]`       | 正常国家内边距     |
-| **manualCountries** | `defaultMarkerRadius`     | `15`             | 标记半径           |
-|                     | `defaultMarkerColor`      | `#e74c3c`        | 选中色             |
-|                     | `defaultBorderColor`      | `#c0392b`        | 边框色             |
-| **ui**              | `title`                   | 交互式世界地图   | 页面标题           |
-|                     | `searchPlaceholder`       | 输入城市或...    | 搜索框占位符       |
-|                     | `searchButtonText`        | 搜索             | 搜索按钮文本       |
-|                     | `searchingText`          | 搜索中...        | 搜索进行中提示文本   |
-|                     | `timeoutText`            | 请求超时，请重试 | 搜索超时提示文本   |
-|                     | `loadingText`            | ⏳ 加载中...    | 加载提示文本       |
-|                     | `noResultsText`          | 未找到匹配       | 无结果文本         |
-|                     | `networkErrorText`       | 网络连接失败     | 网络错误文本       |
+#### map - 地图配置
+
+| 配置项 / Key            | 默认值 / Default  | 说明 / Description |
+| :---------------------- | :---------------- | :----------------- |
+| `initialView.center`    | `[20, 0]`         | 地图初始中心坐标   |
+| `initialView.zoom`      | `2`               | 初始缩放级别       |
+| `zoom.min`              | `2`               | 最小缩放级别       |
+| `zoom.max`              | `19`              | 最大缩放级别       |
+| `tileLayer.url`         | OpenStreetMap URL | 地图瓦片模板       |
+| `tileLayer.attribution` | ODbL              | 地图署名           |
+
+#### geoJson - GeoJSON 数据配置
+
+| 配置项 / Key | 默认值 / Default            | 说明 / Description |
+| :----------- | :-------------------------- | :----------------- |
+| `url`        | GitHub johan/world.geo.json | GeoJSON 数据源地址 |
+
+#### search - 搜索配置
+
+| 配置项 / Key       | 默认值 / Default | 说明 / Description |
+| :----------------- | :--------------- | :----------------- |
+| `timeout`          | `3000`           | 搜索超时（毫秒）   |
+| `limit`            | `8`              | 搜索结果数量       |
+| `citySearch.url`   | Nominatim API    | 城市搜索 API 地址  |
+| `citySearch.limit` | `5`              | 城市搜索结果数量   |
+
+#### countries - 国家配置
+
+| 配置项 / Key              | 默认值 / Default | 说明 / Description    |
+| :------------------------ | :--------------- | :-------------------- |
+| `smallCountryThreshold`   | `0.5`            | 小国家面积阈值（度²） |
+| `smallCountryDefaultZoom` | `10`             | 小国家默认缩放级别    |
+| `normalCountryPadding`    | `[30, 30]`       | 正常国家内边距        |
+
+#### colors - 颜色配置
+
+**country - 国家样式**
+
+| 配置项 / Key           | 默认值 / Default | 说明 / Description |
+| :--------------------- | :--------------- | :----------------- |
+| `default.fillColor`    | `#95a5a6`        | 默认填充色         |
+| `default.borderColor`  | `white`          | 默认边框色         |
+| `default.fillOpacity`  | `0.7`            | 默认填充透明度     |
+| `default.weight`       | `1`              | 默认边框粗细       |
+| `hover.borderColor`    | `#3498db`        | 悬停边框色         |
+| `hover.fillOpacity`    | `0.9`            | 悬停填充透明度     |
+| `hover.weight`         | `2`              | 悬停边框粗细       |
+| `selected.fillColor`   | `#e74c3c`        | 选中填充色         |
+| `selected.borderColor` | `#c0392b`        | 选中边框色         |
+| `selected.fillOpacity` | `0.9`            | 选中填充透明度     |
+| `selected.weight`      | `2`              | 选中边框粗细       |
+
+**marker - 标记样式**
+
+| 配置项 / Key           | 默认值 / Default | 说明 / Description |
+| :--------------------- | :--------------- | :----------------- |
+| `default.fillColor`    | `#3498db`        | 标记默认填充色     |
+| `default.borderColor`  | `#2980b9`        | 标记默认边框色     |
+| `default.fillOpacity`  | `0.3`            | 标记默认填充透明度 |
+| `default.weight`       | `2`              | 标记默认边框粗细   |
+| `hover.fillColor`      | `#e74c3c`        | 标记悬停填充色     |
+| `hover.fillOpacity`    | `0.6`            | 标记悬停填充透明度 |
+| `hover.weight`         | `3`              | 标记悬停边框粗细   |
+| `selected.fillColor`   | `#3ce764`        | 标记选中填充色     |
+| `selected.borderColor` | `#c02b8c`        | 标记选中边框色     |
+| `selected.fillOpacity` | `0.7`            | 标记选中填充透明度 |
+| `selected.weight`      | `3`              | 标记选中边框粗细   |
+
+**search - 搜索颜色**
+
+| 配置项 / Key     | 默认值 / Default | 说明 / Description |
+| :--------------- | :--------------- | :----------------- |
+| `searchingColor` | `#3498db`        | 搜索进行中颜色     |
+| `errorColor`     | `#e74c3c`        | 错误状态颜色       |
+| `warningColor`   | `#e67e22`        | 警告状态颜色       |
+
+**loadingControl - 加载控件颜色**
+
+| 配置项 / Key      | 默认值 / Default     | 说明 / Description |
+| :---------------- | :------------------- | :----------------- |
+| `backgroundColor` | `white`              | 加载控件背景色     |
+| `shadowColor`     | `rgba(0, 0, 0, 0.2)` | 加载控件阴影色     |
+
+#### ui - 界面文本配置
+
+| 配置项 / Key                | 默认值 / Default                                     | 说明 / Description |
+| :-------------------------- | :--------------------------------------------------- | :----------------- |
+| `title`                     | `交互式世界地图`                                     | 页面标题           |
+| `searchPlaceholder`         | `输入城市或国家名称（支持中文/英文），按回车搜索...` | 搜索框占位符       |
+| `searchButtonText`          | `搜索`                                               | 搜索按钮文本       |
+| `searchingText`             | `搜索中...`                                          | 搜索进行中提示文本 |
+| `searchButtonDisabledText`  | `搜索`                                               | 按钮禁用时的文本   |
+| `timeoutText`               | `请求超时，请重试`                                   | 搜索超时提示文本   |
+| `loadingText`               | `⏳ 正在加载国家数据...`                             | 加载提示文本       |
+| `loadingErrorText`          | `❌ 加载国家数据失败，请刷新重试`                    | 加载错误文本       |
+| `dataLoadingText`           | `⏳ 边界数据正在加载中，请稍后再试...`               | 数据加载中提示文本 |
+| `noResultsText`             | `未找到匹配的地点`                                   | 无结果文本         |
+| `networkErrorText`          | `网络连接失败，请检查网络后重试`                     | 网络错误文本       |
+| `currentCountryDefaultText` | `暂无，请点击地图选择`                               | 默认选中国家文本   |
+| `infoBoxInstructions`       | `鼠标悬停可预览，点击后变为红色高亮。`               | 信息框说明文本     |
+| `infoBoxTip`                | `加载边界数据可能需要几秒钟，请稍候。`               | 信息框提示文本     |
 
 ### 配置 API / Configuration API
 
 #### `get(path, defaultValue)`
+
 获取配置值，带默认值支持。
 
 ```javascript
@@ -90,6 +215,7 @@ const minZoom = get("map.zoom.min", 2);
 ```
 
 #### `getAll()`
+
 获取完整配置对象。
 
 ```javascript
@@ -98,6 +224,7 @@ console.log(config.map.initialView);
 ```
 
 #### `set(path, value)`
+
 运行时更新配置值。
 
 ```javascript
@@ -112,12 +239,12 @@ set("map.tileLayer.url", "https://new-tiles.example.com/{z}/{x}/{y}.png");
 
 ```javascript
 const appConfig = {
-  "geoJson": {
-    "url": "https://your-custom-source/data.json"
+  geoJson: {
+    url: "https://your-custom-source/data.json",
   },
-  "search": {
-    "timeout": 3000
-  }
+  search: {
+    timeout: 3000,
+  },
 };
 ```
 
@@ -148,6 +275,7 @@ map/
 ### Data Modules (`data/`)
 
 #### `data/country-names.js`
+
 - **功能**：英中国家名称映射 / English-Chinese name mappings
 - **导出**：
   - `countryNameMap` - 英文名到中文名的映射对象
@@ -157,6 +285,7 @@ map/
 - **数据量**：180+ 国家/地区名称映射
 
 #### `data/manual-countries.js`
+
 - **功能**：GeoJSON 中缺失的小国手动定义 / Manually defined countries not in GeoJSON
 - **导出**：`manualCountries` 对象，每个国家包含：
   - `name` - 英文名称
@@ -168,6 +297,7 @@ map/
 - **包含国家**：新加坡、摩纳哥、梵蒂冈、马耳他、巴林、卡塔尔等 40+ 个小国
 
 #### `data/country-codes.js`
+
 - **功能**：ISO 国家代码到英文名映射 / ISO country code mappings
 - **导出**：`countryCodeToName` 对象
 - **用途**：将 Nominatim API 返回的国家代码（如 `CN`、`US`）映射到英文名称
@@ -176,28 +306,31 @@ map/
 ### Application Modules (`js/`)
 
 #### `js/config.js`
+
 **配置加载模块，提供以下功能：** / Configuration loader module
 
-| 函数 / Function | 说明 / Description |
-|----------------|-------------------|
+| 函数 / Function           | 说明 / Description     |
+| ------------------------- | ---------------------- |
 | `get(path, defaultValue)` | 获取配置值（带默认值） |
-| `getAll()` | 获取完整配置对象 |
-| `set(path, value)` | 运行时更新配置 |
+| `getAll()`                | 获取完整配置对象       |
+| `set(path, value)`        | 运行时更新配置         |
 
 **加载顺序**：必须在其他所有模块之前加载，因为其他模块依赖它。
 
 **加载方式**：同步加载（`<script>` 标签），避免 CORS 问题。
 
 #### `js/map.js`
+
 **地图初始化模块** / Map initialization module
 
-| 函数 / Function | 说明 / Description |
-|----------------|-------------------|
-| `initMap()` | 初始化地图实例，设置初始视图和底图 |
-| `getMap()` | 获取地图实例的引用 |
-| `createLoadingControl()` | 创建加载指示器控件 |
+| 函数 / Function          | 说明 / Description                 |
+| ------------------------ | ---------------------------------- |
+| `initMap()`              | 初始化地图实例，设置初始视图和底图 |
+| `getMap()`               | 获取地图实例的引用                 |
+| `createLoadingControl()` | 创建加载指示器控件                 |
 
 **使用的配置**：
+
 - `map.initialView.center` - 初始中心坐标
 - `map.initialView.zoom` - 初始缩放级别
 - `map.zoom.min/max` - 缩放级别范围
@@ -207,20 +340,22 @@ map/
 **依赖**：`js/config.js`
 
 #### `js/countries.js`
+
 **国家交互模块** / Country interaction module
 
-| 函数 / Function | 说明 / Description |
-|----------------|-------------------|
-| `loadCountryData(onSuccess, onError)` | 加载 GeoJSON 数据并创建国家图层 |
-| `selectCountry(layer)` | 选中一个国家并高亮显示 |
-| `highlightCountryByName(englishName, chineseName)` | 根据名称查找并高亮国家 |
-| `getCurrentlyHighlighted()` | 获取当前高亮的国家图层 |
-| `getCountriesLayer()` | 获取国家图层引用 |
-| `resetPreviousHighlight()` | 恢复之前高亮国家的样式 |
-| `updateInfoBox(text)` | 更新信息框内容 |
-| `syncSmallCountryMarker(layer, isSelected)` | 同步小国家标记的样式 |
+| 函数 / Function                                    | 说明 / Description              |
+| -------------------------------------------------- | ------------------------------- |
+| `loadCountryData(onSuccess, onError)`              | 加载 GeoJSON 数据并创建国家图层 |
+| `selectCountry(layer)`                             | 选中一个国家并高亮显示          |
+| `highlightCountryByName(englishName, chineseName)` | 根据名称查找并高亮国家          |
+| `getCurrentlyHighlighted()`                        | 获取当前高亮的国家图层          |
+| `getCountriesLayer()`                              | 获取国家图层引用                |
+| `resetPreviousHighlight()`                         | 恢复之前高亮国家的样式          |
+| `updateInfoBox(text)`                              | 更新信息框内容                  |
+| `syncSmallCountryMarker(layer, isSelected)`        | 同步小国家标记的样式            |
 
 **使用的配置**：
+
 - `geoJson.url` - GeoJSON 数据源地址
 - `countries.smallCountryThreshold` - 小国家面积阈值
 - `countries.smallCountryDefaultZoom` - 小国家默认缩放级别
@@ -230,39 +365,43 @@ map/
 **依赖**：`js/config.js`, `js/map.js`, `data/country-names.js`
 
 #### `js/small-countries.js`
+
 **小国家标记模块** / Small country markers module
 
-| 函数 / Function | 说明 / Description |
-|----------------|-------------------|
-| `addSmallCountryMarkers(countriesLayer)` | 为 GeoJSON 中的小国家添加圆形标记 |
-| `showManualCountryMarkers()` | 显示手动定义的国家标记 |
-| `zoomToManualCountry(englishName, chineseName)` | 缩放到手动定义的国家 |
+| 函数 / Function                                 | 说明 / Description                |
+| ----------------------------------------------- | --------------------------------- |
+| `addSmallCountryMarkers(countriesLayer)`        | 为 GeoJSON 中的小国家添加圆形标记 |
+| `showManualCountryMarkers()`                    | 显示手动定义的国家标记            |
+| `zoomToManualCountry(englishName, chineseName)` | 缩放到手动定义的国家              |
 
 **使用的配置**：
-- `manualCountries.defaultMarkerRadius` - 标记半径
-- `manualCountries.defaultMarkerColor` - 选中色
-- `manualCountries.defaultBorderColor` - 边框色
+
+- `colors.marker.default` - 标记默认样式（填充色、边框色、透明度、粗细）
+- `colors.marker.hover` - 标记悬停样式
+- `colors.marker.selected` - 标记选中样式
 
 **依赖**：`js/config.js`, `js/map.js`, `js/countries.js`, `data/country-names.js`, `data/manual-countries.js`
 
 #### `js/search.js`
+
 **搜索功能模块** / Search functionality module
 
-| 函数 / Function | 说明 / Description |
-|----------------|-------------------|
-| `searchLocation(query)` | 搜索位置（国家或城市） |
-| `searchCountries(query)` | 搜索国家名称（支持中英文） |
-| `displayCountryResults(results)` | 显示国家搜索结果 |
-| `displayCityResults(results)` | 显示城市搜索结果（Nominatim API） |
-| `selectCountryResult(englishName, chineseName)` | 选中国家搜索结果 |
-| `selectCityResult(lat, lon, name, country, countryCode)` | 选中城市搜索结果 |
-| `highlightCountryAtLocation(lat, lon, countryName, countryCode)` | 在指定位置高亮国家 |
-| `setupSearchEvents()` | 绑定搜索事件监听器 |
-| `updateSelection()` | 更新选中项的显示 |
-| `selectCurrentItem()` | 处理选中项的点击 |
-| `finishSearch()` | 完成搜索，恢复按钮状态 |
+| 函数 / Function                                                  | 说明 / Description                |
+| ---------------------------------------------------------------- | --------------------------------- |
+| `searchLocation(query)`                                          | 搜索位置（国家或城市）            |
+| `searchCountries(query)`                                         | 搜索国家名称（支持中英文）        |
+| `displayCountryResults(results)`                                 | 显示国家搜索结果                  |
+| `displayCityResults(results)`                                    | 显示城市搜索结果（Nominatim API） |
+| `selectCountryResult(englishName, chineseName)`                  | 选中国家搜索结果                  |
+| `selectCityResult(lat, lon, name, country, countryCode)`         | 选中城市搜索结果                  |
+| `highlightCountryAtLocation(lat, lon, countryName, countryCode)` | 在指定位置高亮国家                |
+| `setupSearchEvents()`                                            | 绑定搜索事件监听器                |
+| `updateSelection()`                                              | 更新选中项的显示                  |
+| `selectCurrentItem()`                                            | 处理选中项的点击                  |
+| `finishSearch()`                                                 | 完成搜索，恢复按钮状态            |
 
 **使用的配置**：
+
 - `search.timeout` - 搜索超时时间
 - `search.limit` - 搜索结果数量
 - `search.citySearch.url` - 城市搜索 API 地址
@@ -272,6 +411,7 @@ map/
 **依赖**：`js/config.js`, `js/map.js`, `js/countries.js`, `data/country-names.js`, `data/manual-countries.js`, `data/country-codes.js`
 
 **特性**：
+
 - 支持搜索超时取消和请求中止
 - 新搜索会自动取消之前的请求（使用 AbortController）
 - 超时时正确显示超时提示并恢复按钮状态
@@ -285,11 +425,23 @@ map/
 
 ### 国家状态样式 / Country State Styles
 
-| 状态 / State    | 填充色 / fillColor | 边框粗细 / weight | 边框色 / color | 透明度 / fillOpacity |
-| :-------------- | :----------------- | :---------------- | :------------- | :------------------- |
-| 默认 / Default  | `#95a5a6`          | `1`               | `white` (白色) | `0.7`                |
-| 悬停 / Hover    | `#95a5a6`          | `2`               | `#3498db`      | `0.9`                |
-| 选中 / Selected | `#e74c3c`          | `2`               | `#c0392b`      | `0.9`                |
+样式值从 `colors.country` 配置读取，可通过配置自定义。
+
+| 状态 / State    | 填充色 / fillColor | 边框粗细 / weight | 边框色 / borderColor | 透明度 / fillOpacity |
+| :-------------- | :----------------- | :---------------- | :------------------- | :------------------- |
+| 默认 / Default  | `#95a5a6`          | `1`               | `white`              | `0.7`                |
+| 悬停 / Hover    | `#95a5a6`          | `2`               | `#3498db`            | `0.9`                |
+| 选中 / Selected | `#e74c3c`          | `2`               | `#c0392b`            | `0.9`                |
+
+### 标记状态样式 / Marker State Styles
+
+样式值从 `colors.marker` 配置读取。
+
+| 状态 / State    | 填充色 / fillColor | 边框粗细 / weight | 边框色 / borderColor | 透明度 / fillOpacity |
+| :-------------- | :----------------- | :---------------- | :------------------- | :------------------- |
+| 默认 / Default  | `#3498db`          | `2`               | `#2980b9`            | `0.3`                |
+| 悬停 / Hover    | `#e74c3c`          | `3`               | `#2980b9`            | `0.6`                |
+| 选中 / Selected | `#3ce764`          | `3`               | `#c02b8c`            | `0.7`                |
 
 ### 搜索结果样式 / Search Result Styles
 
@@ -326,16 +478,16 @@ map/
 
 ## 界面元素 / UI Elements
 
-| 元素 ID / Element ID | 描述 / Description                                           |
-| :------------------- | :----------------------------------------------------------- |
-| `#map`               | Main map container (680px height) / 主地图容器               |
-| `#searchBox`         | Search input and button / 搜索输入框和按钮                   |
-| `#searchInput`       | Text input for country/city search / 国家/城市搜索输入       |
-| `#searchResults`     | Dropdown for search results / 搜索结果下拉框                 |
-| `#infoBox`           | Info panel showing selected country / 显示选中国家的信息面板 |
+| 元素 ID / Element ID | 描述 / Description                                                   |
+| :------------------- | :------------------------------------------------------------------- |
+| `#map`               | Main map container (680px height) / 主地图容器                       |
+| `#searchBox`         | Search input and button / 搜索输入框和按钮                           |
+| `#searchInput`       | Text input for country/city search / 国家/城市搜索输入               |
+| `#searchResults`     | Dropdown for search results / 搜索结果下拉框                         |
+| `#infoBox`           | Info panel showing selected country / 显示选中国家的信息面板         |
 | `#currentCountry`    | Updates with clicked/searched country name / 更新点击/搜索的国家名称 |
 | `Loading indicator`  | Custom Leaflet control showing data load status / 数据加载状态指示器 |
-| `Scale control`      | Metric scale indicator / 公制比例尺指示器                    |
+| `Scale control`      | Metric scale indicator / 公制比例尺指示器                            |
 
 ---
 
@@ -349,8 +501,8 @@ map/
 const appConfig = {
   // ... existing config
   newSection: {
-    newOption: "default value"
-  }
+    newOption: "default value",
+  },
 };
 ```
 
@@ -382,12 +534,12 @@ const myValue = get("newSection.newOption", "fallback value");
 ```javascript
 const countryNameMap = {
   // ... existing entries
-  "New Country": "新国家中文名"
+  "New Country": "新国家中文名",
 };
 
 const chineseToEnglishMap = {
   // ... existing entries
-  "新国家中文名": "New Country"
+  新国家中文名: "New Country",
 };
 ```
 
@@ -403,40 +555,47 @@ const manualCountries = {
     chineseName: "新国家中文名",
     center: [latitude, longitude],
     zoom: 10,
-    type: "country" // or "region"
-  }
+    type: "country", // or "region"
+  },
 };
 ```
 
 ### 自定义地图样式 / Customizing Map Styles
 
-修改 `js/countries.js` 中的样式对象：
+编辑 `js/config.js` 中的 `colors` 配置节：
 
 ```javascript
-// 默认样式
-function defaultCountryStyle(feature) {
-  return {
-    fillColor: "#95a5a6",     // 修改填充色
-    weight: 1,                // 修改边框粗细
-    opacity: 1,                // 修改边框透明度
-    color: "white",           // 修改边框颜色
-    fillOpacity: 0.7,         // 修改填充透明度
-  };
-}
-
-// 高亮样式
-const highlightStyle = {
-  weight: 2,
-  color: "#3498db",           // 修改悬停边框色
-  fillOpacity: 0.9,
-};
-
-// 选中样式
-const selectedStyle = {
-  fillColor: "#e74c3c",       // 修改选中填充色
-  weight: 2,
-  color: "#c0392b",          // 修改选中边框色
-  fillOpacity: 0.9,
+const appConfig = {
+  colors: {
+    country: {
+      default: {
+        fillColor: "#95a5a6", // 修改默认填充色
+        borderColor: "white", // 修改默认边框色
+        fillOpacity: 0.7, // 修改默认填充透明度
+        weight: 1, // 修改默认边框粗细
+      },
+      hover: {
+        borderColor: "#3498db", // 修改悬停边框色
+        fillOpacity: 0.9, // 修改悬停填充透明度
+        weight: 2, // 修改悬停边框粗细
+      },
+      selected: {
+        fillColor: "#e74c3c", // 修改选中填充色
+        borderColor: "#c0392b", // 修改选中边框色
+        fillOpacity: 0.9, // 修改选中填充透明度
+        weight: 2, // 修改选中边框粗细
+      },
+    },
+    marker: {
+      default: {
+        fillColor: "#3498db", // 修改标记默认填充色
+        borderColor: "#2980b9", // 修改标记默认边框色
+        fillOpacity: 0.3, // 修改标记默认填充透明度
+        weight: 2, // 修改标记默认边框粗细
+      },
+      // ... hover 和 selected 样式类似
+    },
+  },
 };
 ```
 
@@ -461,9 +620,10 @@ const appConfig = {
       // Stamen Terrain
       // url: "https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.png",
 
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }
-  }
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    },
+  },
 };
 ```
 
@@ -479,7 +639,7 @@ const appConfig = {
 
     // 或使用其他在线源
     // url: "https://example.com/geojson/world.json"
-  }
+  },
 };
 ```
 
@@ -493,7 +653,7 @@ const appConfig = {
 const appConfig = {
   countries: {
     // 面积小于该值的国家被视为小国（度²）
-    smallCountryThreshold: 0.5,    // 默认值
+    smallCountryThreshold: 0.5, // 默认值
     // 可以调整为更大或更小
     // smallCountryThreshold: 1.0,    // 更严格，更多国家被视为小国
     // smallCountryThreshold: 0.1,    // 更宽松，只有非常小的国家才加标记
@@ -502,8 +662,8 @@ const appConfig = {
     smallCountryDefaultZoom: 10,
 
     // 正常国家的内边距（避免边界贴边）
-    normalCountryPadding: [30, 30]
-  }
+    normalCountryPadding: [30, 30],
+  },
 };
 ```
 
@@ -514,6 +674,7 @@ const appConfig = {
 ### 配置 API / Configuration API
 
 #### `get(path, defaultValue)`
+
 ```javascript
 /**
  * 获取配置值
@@ -524,6 +685,7 @@ const appConfig = {
 ```
 
 #### `getAll()`
+
 ```javascript
 /**
  * 获取完整配置对象
@@ -532,6 +694,7 @@ const appConfig = {
 ```
 
 #### `set(path, value)`
+
 ```javascript
 /**
  * 设置配置值（运行时修改）
@@ -543,6 +706,7 @@ const appConfig = {
 ### 地图 API / Map API
 
 #### `initMap()`
+
 ```javascript
 /**
  * 初始化地图实例
@@ -551,6 +715,7 @@ const appConfig = {
 ```
 
 #### `getMap()`
+
 ```javascript
 /**
  * 获取地图实例引用
@@ -561,6 +726,7 @@ const appConfig = {
 ### 国家 API / Country API
 
 #### `loadCountryData(onSuccess, onError)`
+
 ```javascript
 /**
  * 加载国家边界数据
@@ -570,6 +736,7 @@ const appConfig = {
 ```
 
 #### `highlightCountryByName(englishName, chineseName)`
+
 ```javascript
 /**
  * 根据国家名称查找并高亮国家
@@ -579,6 +746,7 @@ const appConfig = {
 ```
 
 #### `selectCountry(layer)`
+
 ```javascript
 /**
  * 选中一个国家图层并高亮
@@ -589,6 +757,7 @@ const appConfig = {
 ### 搜索 API / Search API
 
 #### `searchLocation(query)`
+
 ```javascript
 /**
  * 搜索位置（国家或城市）
@@ -598,6 +767,7 @@ const appConfig = {
 ```
 
 #### `selectCityResult(lat, lon, name, country, countryCode)`
+
 ```javascript
 /**
  * 选中城市搜索结果
@@ -613,11 +783,11 @@ const appConfig = {
 
 ## 数据来源 / Data Sources
 
-| 数据类型 / Data Type | 来源 / Source | 许可证 / License |
-|---------|------|--------|
+| 数据类型 / Data Type               | 来源 / Source                                                   | 许可证 / License               |
+| ---------------------------------- | --------------------------------------------------------------- | ------------------------------ |
 | 国家/地区边界 / Country Boundaries | [johan/world.geo.json](https://github.com/johan/world.geo.json) | 请参阅源仓库 / Refer to source |
-| 地图瓦片 / Map Tiles | [OpenStreetMap](https://www.openstreetmap.org/) | ODbL |
-| 位置搜索 / Location Search | [Nominatim API](https://nominatim.openstreetmap.org/) | 使用策略 / Usage Policy |
+| 地图瓦片 / Map Tiles               | [OpenStreetMap](https://www.openstreetmap.org/)                 | ODbL                           |
+| 位置搜索 / Location Search         | [Nominatim API](https://nominatim.openstreetmap.org/)           | 使用策略 / Usage Policy        |
 
 ---
 
@@ -649,6 +819,7 @@ A: 通过计算国家边界的宽度和高度，得到面积（宽×高）。如
 ### Q: 搜索时为什么有时需要等待？
 
 A: 搜索分为两步：
+
 1. 首先在本地匹配国家名称（快速）
 2. 如果没有匹配，则调用 Nominatim API 搜索城市（需要网络请求）
 
